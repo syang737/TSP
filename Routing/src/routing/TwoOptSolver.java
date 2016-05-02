@@ -40,7 +40,7 @@ public class TwoOptSolver extends Solver
             System.out.println("Optimized the path by " + (-cut) + "feet");
 
         } while (cut < 0);
-        return x;
+        return houses;
     }
 
     public static House[] twoOptSwap(House[] x, int i, int k)

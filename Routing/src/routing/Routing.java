@@ -22,22 +22,31 @@ public class Routing
      */
     public static void main(String[] args)
     {
-        String fileName = "/Users/simon.yang/Desktop/cycle data/cycle6.txt";
+        
+        
+        String fileName = "/Users/simon.yang/Desktop/cycle data/cycle1.txt";
         int packages = Util.getPackages(fileName);
         int bartPackages = Util.getBartPackages(fileName);
         int lisaPackages = Util.getLisaPackages(fileName);
 
         System.out.println(bartPackages);
         System.out.println(lisaPackages);
-        House[] houses = readData(fileName);
+        House[] data = readData(fileName);
+        House[] houses = new House[data.length + 2];
+        System.arraycopy(data, 0, houses, 0, data.length);
+        houses[data.length] = new House(2, 3, "A");
+        houses[data.length + 1] = new House(149,33,"A");
         House[] path;
+        
+        
+        
 //        path = testFunction("TwoOpt", houses, new TwoOptSolver());
 //        printResults("TwoOpt", path, packages, false);
         path = testFunction("Greedy", houses, new GreedySolver(), bartPackages, lisaPackages);
         
         printResults("Greedy", path, packages, false);
-        path = testFunction("OptimizedTwoOpt", houses, new TwoOptSecond(), bartPackages, lisaPackages);
-        printResults("OptimizedTwoOpt", path, packages, false);
+//        path = testFunction("OptimizedTwoOpt", houses, new TwoOptSecond(), bartPackages, lisaPackages);
+//        printResults("OptimizedTwoOpt", path, packages, false);
 
     }
 
@@ -125,21 +134,7 @@ public class Routing
     public static void printResults(String tag, House[] path, int packages, boolean verbose)
     {
         System.out.println("Route from " + tag + ":");
-
-        if (verbose)
-        {
-            for (int i = 0; i < path.length; i++)
-            {
-
-                System.out.println("House " + (i + 1));
-
-                System.out.println("Street: " + path[i].getStreet());
-                System.out.println("Avenue: " + path[i].getAvenue());
-                System.out.println("Letter: " + path[i].getLetter());
-                System.out.println("------");
-
-            }
-        }
+        int counter = 2;
         int employees = 1;
         int trucks = 1;
         double manHours = Util.pathTime(packages, path);
@@ -156,9 +151,36 @@ public class Routing
             }
             dayTime = Util.travelTime(path) / trucks + Util.houseTime(packages) / employees;
         }
+        if (verbose)
+        {
+            System.out.println("Truck 1's Path:");
+            for (int i = 0; i < path.length; i++)
+            {
+                if (i == (int)path.length/trucks)
+                {
+                    System.out.println("Truck " + counter + "'s Path:");
+                }
+                if(path[i] == null)
+                {
+                    System.out.println("null");
+                    continue;
+                }
+                
+
+                System.out.println("House " + (i + 1));
+
+                System.out.println("Street: " + path[i].getStreet());
+                System.out.println("Avenue: " + path[i].getAvenue());
+                System.out.println("Letter: " + path[i].getLetter());
+                System.out.println("------");
+
+            }
+        }
+        
         System.out.println("Trucks: " + trucks);
         System.out.println("Employees: " + employees);
-        double totalCost = Util.eitherPurchaseOrRent(totalDistance) * trucks + Util.calcFuelCharge(totalDistance) + Util.employeeCost(dayTime) * employees;
+        double totalCost = Util.eitherPurchaseOrRent(totalDistance) * trucks + Util.calcFuelCharge(totalDistance) + Util.eachEmployeeCost(dayTime) * employees;
+        
         System.out.println("Total Distance (miles): " + totalDistance);
         System.out.println(manHours + " Man Hours");
         System.out.println("Total cost: " + totalCost);

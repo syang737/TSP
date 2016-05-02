@@ -16,22 +16,14 @@ public class GreedySolver extends Solver
 {
     public House[] solve(House[] allHouses)
     {
-        int bartPackages = 0;
-        int lisaPackages = 0;
         ArrayList<House> x = new ArrayList<>();
         for( House h : allHouses ) x.add( h );
-        int bartTrips = bartPackages / 100;
-        int lisaTrips = lisaPackages / 100;
         House start = new House(125, 22, "A");
         House temp = new House(1, 1, "A");
         House[] path = new House[x.size()];
 
         for (int i = 0; i < path.length; i++) //loop through every house in the cixty
         {
-            int bartIndex = 99999;
-            int lisaIndex = 99999;
-            int bartCounter = 1;
-            int lisaCounter = 1;
             int index = 0;
             double bigdist = 99999;
             if (i != 0)
@@ -59,28 +51,9 @@ public class GreedySolver extends Solver
 
             }
             path[i] = temp;
-            if (x.get(index).equals(new House(2, 3, "A")) && bartCounter != bartTrips)
-            {
-                bartIndex = index;
-
-            }
-            if (x.get(index).equals(new House(149, 33, "A")) && lisaCounter != lisaTrips)
-            {
-                lisaIndex = index;
-
-            }
 
             x.remove(index);
-            if (i == bartIndex + 1)
-            {
-                x.add(new House(2, 3, "A"));
-                bartCounter++;
-            }
-            if (i == lisaIndex + 1)
-            {
-                x.add(new House(149, 33, "A"));
-                lisaCounter++;
-            }
+            
 
         }
         return path;

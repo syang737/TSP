@@ -138,18 +138,14 @@ public class Util
         //rent
     }
 
-    public static double employeeCost(double time)
+    public static double eachEmployeeCost(double dayTime)
     {
-        int employees = (int) Math.ceil(time / 24);
-        double pay = 0;
-        double eachtime = time / employees;
-
-        if (eachtime <= 8)
+        if (dayTime <= 8)
         {
-            return pay = eachtime * 30 * employees;
+            return dayTime * 30;
         } else
         {
-            return pay = (240 + 45 * (eachtime - 8)) * employees;
+            return (240 + 45 * (dayTime - 8));
         }
     }
 
